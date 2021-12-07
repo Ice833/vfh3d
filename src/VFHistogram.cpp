@@ -102,41 +102,41 @@ std::vector<geometry_msgs::Pose> VFHistogram::findPaths(int width, int height) {
   std::vector<geometry_msgs::Pose> ps;
   float az, el;
   for (int i=0; i<getWidth(); i++) {
-    for (int j=0; j<getHeight(); j++) {
-      getValues(ret_vals, i, j, width, height);
-      //float s = sum(ret_vals, width*height);
-      bool empty = true;
-      for (int k = 0; k < width*height; k++) {
-        if (abs(ret_vals[k]) > 0.0001 || ret_vals[k] != ret_vals[k])
-          empty = false;
+      for (int j=0; j<getHeight(); j++) {
+        getValues(ret_vals, i, j, width, height);
+        //float s = sum(ret_vals, width*height);
+        bool empty = true;
+        for (int k = 0; k < width*height; k++) {
+          if (abs(ret_vals[k]) > 0.0001 || ret_vals[k] != ret_vals[k])
+            empty = false;
+        }
+        //std::cout << s << std::endl;
+        //if (abs(s) < 0.0001) {
+        if (empty) {
+          az = -(i+(float)width/2-getWidth()/4)*alpha;
+          el = M_PI/2-(j+(float)height/2-1)*alpha;
+
+          geometry_msgs::Pose p;
+          // Conversion to quaternion ripped from wikipedia
+          // Abbreviations for the various angular functions
+          double cy = cos(az * 0.5);
+          double sy = sin(az * 0.5);
+          double cr = cos(0 * 0.5); // roll = 0
+          double sr = sin(0 * 0.5); // roll = 0
+          double cp = cos(el * 0.5);
+          double sp = sin(el * 0.5);
+
+          p.orientation.w = cy * cr * cp + sy * sr * sp;
+          p.orientation.x = cy * sr * cp - sy * cr * sp;
+          p.orientation.y = cy * cr * sp + sy * sr * cp;
+          p.orientation.z = sy * cr * cp - cy * sr * sp;
+
+          p.position.x = ox;
+          p.position.y = oy;
+          p.position.z = oz;
+          ps.push_back(p);
+        }
       }
-      //std::cout << s << std::endl;
-      //if (abs(s) < 0.0001) {
-      if (empty) {
-        az = -(i+(float)width/2-getWidth()/4)*alpha;
-        el = M_PI/2-(j+(float)height/2-1)*alpha;
-
-        geometry_msgs::Pose p;
-        // Conversion to quaternion ripped from wikipedia
-        // Abbreviations for the various angular functions
-        double cy = cos(az * 0.5);
-        double sy = sin(az * 0.5);
-        double cr = cos(0 * 0.5); // roll = 0
-        double sr = sin(0 * 0.5); // roll = 0
-        double cp = cos(el * 0.5);
-        double sp = sin(el * 0.5);
-
-        p.orientation.w = cy * cr * cp + sy * sr * sp;
-        p.orientation.x = cy * sr * cp - sy * cr * sp;
-        p.orientation.y = cy * cr * sp + sy * sr * cp;
-        p.orientation.z = sy * cr * cp - cy * sr * sp;
-
-        p.position.x = ox;
-        p.position.y = oy;
-        p.position.z = oz;
-        ps.push_back(p);
-      }
-    }
     }
     return ps;
   }
