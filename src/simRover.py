@@ -7,8 +7,10 @@ from pyquaternion import Quaternion
 def init():
     rospy.init_node("vehicle_sim", anonymous=True)
     pub = rospy.Publisher("/vehiclePose", PoseStamped, queue_size=10)
+
     def callback(msg):
         print(msg)
+        # What if msg is empty ?
         q = Quaternion(msg.pose.orientation.w,msg.pose.orientation.x,
                 msg.pose.orientation.y,msg.pose.orientation.z)
         diff = q.rotate(np.array([1, 0, 0]))
@@ -21,7 +23,7 @@ def init():
         nextPose.header.frame_id = "map"
         rospy.loginfo(nextPose)
         pub.publish(nextPose)
-    rospy.Subscriber("next_direction", PoseStamped, callback)
+    rospy.Subscriber("/next_direction", PoseStamped, callback)
     rospy.spin()
 
 if __name__ == "__main__":
