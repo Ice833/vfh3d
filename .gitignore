@@ -35,3 +35,10 @@
 *.exe
 *.out
 *.app
+
+# Build dir
+/build
+
+#Configuration files
+/.vscode
+*.rviz
