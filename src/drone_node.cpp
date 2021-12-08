@@ -8,15 +8,24 @@
 using namespace octomap;
 
 int main(int argc, char ** argv) {
-  ros::init(argc, argv, "vfh_rover_node");
+  ros::init(argc, argv, "drone_node");
   ros::NodeHandle nh;
 
+    float x, y, z, h, w, d, safety_radius; // meters
+    float maxIncline, minIncline; // radians
+    bool prevSet;
 
-  Vehicle v(-5,0,1, 1,1,1, 0.4, M_PI/8,-M_PI/8, false);
-  OctomapProcessing op (0.09, v, 5, nh);
-  ros::Subscriber sub1 = nh.subscribe("/octomap_full", 3, &OctomapProcessing::octomapCallback, &op);
-  ros::Subscriber sub2 = nh.subscribe("/goal", 3, &OctomapProcessing::goalCallback, &op);
-  ros::Subscriber sub3 = nh.subscribe("/vehiclePose", 3, &OctomapProcessing::poseCallback, &op);
-  ros::spin();
-  return 0;
+    nh.getParam("/init_x", x); nh.getParam("/init_y", y); nh.getParam("/init_z", z);
+    nh.getParam("/height", h); nh.getParam("/width", w); nh.getParam("/depth", d);
+    nh.getParam("/safety_radius", safety_radius); nh.getParam("/maxIncline", maxIncline); nh.getParam("/minIncline", minIncline);
+    nh.getParam("/prevSet", prevSet);
+
+    //   Vehicle v(-5,0,1, 1,1,1, 0.4, M_PI/8,-M_PI/8, false);
+    Vehicle v(x,y,z, h,w,d, safety_radius, maxIncline, minIncline, prevSet);
+    OctomapProcessing op (0.09, v, 5, nh); // alpha = 0.09, max_range = 5;
+    ros::Subscriber sub1 = nh.subscribe("/octomap_curr", 3, &OctomapProcessing::octomapCallback, &op);
+    ros::Subscriber sub2 = nh.subscribe("/goal", 3, &OctomapProcessing::goalCallback, &op);
+    ros::Subscriber sub3 = nh.subscribe("/uavPose", 3, &OctomapProcessing::poseCallback, &op);
+    ros::spin();
+    return 0;
 }
