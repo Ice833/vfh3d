@@ -4,6 +4,7 @@ project(vfh_rover)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11 -O3)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(PCL_DIR /usr/lib/x86_64-linux-gnu/cmake/pcl)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -12,9 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   PCL
   pcl_conversions
 )
-
-find_package(octomap REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
+find_package(octomap REQUIRED)
 add_definitions(-DOCTOMAP_NODEBUGOUT)
 
 ## Uncomment this if the package has a setup.py
@@ -24,7 +25,7 @@ catkin_package(
  INCLUDE_DIRS include
  LIBRARIES vfh_rover
  CATKIN_DEPENDS roscpp
- DEPENDS system_lib PCL
+ DEPENDS system_lib PCL 
 )
 
 include_directories(
@@ -37,6 +38,13 @@ include_directories(
 set(LINK_LIBS
   ${OCTOMAP_LIBRARIES}
   ${PCL_LIBRARIES}
+  ${OCTOMAP_LIBRARIES}
+)
+
+link_directories(
+	include
+  ${OCTOMAP_LIBRARIES}
+	${PCL_LIBRARY_DIRS}
   ${catkin_LIBRARIES}
 )
 
@@ -48,10 +56,10 @@ set(SRC
 )
 
 add_executable(${PROJECT_NAME}_node src/vfh_rover_node.cpp ${SRC})
-target_link_libraries(${PROJECT_NAME}_node ${LINK_LIBS})
+target_link_libraries(${PROJECT_NAME}_node ${LINK_LIBS} ${PCL_LIBRARIES})
 
 add_executable(drone_node src/drone_node.cpp ${SRC})
-target_link_libraries(drone_node ${LINK_LIBS})
+target_link_libraries(drone_node ${LINK_LIBS} ${PCL_LIBRARIES})
 
 add_executable(${PROJECT_NAME}_testPC src/SingleVoxTest.cpp ${SRC})
-target_link_libraries(${PROJECT_NAME}_testPC ${LINK_LIBS})
+target_link_libraries(${PROJECT_NAME}_testPC ${LINK_LIBS} ${PCL_LIBRARIES})
