@@ -1,11 +1,5 @@
 #include "include/vfh_rover/cloudProcessing.h"
 
-void laserCloudCropHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudCropRes)
-{
-    pcl::fromROSMsg(*laserCloudCropRes, *laserCloudCrop);
-}
-
-//Save input pcd into octree.
 void cloudProcess(const pcl::PointCloud<PointType>::Ptr& cloud_in)
 {
     for(int i = 0; i < cloud_in->size(); i++){
@@ -13,6 +7,13 @@ void cloudProcess(const pcl::PointCloud<PointType>::Ptr& cloud_in)
         tree.updateNode(point, true);
     }
 }
+
+void laserCloudCropHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudCropRes)
+{
+    pcl::fromROSMsg(*laserCloudCropRes, *laserCloudCrop);
+    cloudProcess(laserCloudCrop);
+}
+
 
 int main(int argc, char** argv){
     ros::init(argc, argv, "cloudProcessNode");
@@ -22,7 +23,10 @@ int main(int argc, char** argv){
     subCropLaserCloudMap = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map_bounded", 100, laserCloudCropHandler);
 
     pubOcto = nh.advertise<octomap_msgs::Octomap>("octomapCropped", 100);
+
+    pubOcto.publish(tree);
     
     ros::spin();
+    
     return 0;
 }
