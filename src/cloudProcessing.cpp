@@ -22,7 +22,7 @@ int main(int argc, char** argv){
 
     subCropLaserCloudMap = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map_bounded", 100, laserCloudCropHandler);
 
-    pubOcto = nh.advertise<octomap_msgs::Octomap>("octomapCropped", 100);
+    pubOcto = nh.advertise<octomap_msgs::Octomap>("/octomapCropped", 100);
 
     pubOcto.publish(tree);
     
