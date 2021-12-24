@@ -6,9 +6,9 @@
   <param name="/init_x" value="0" />
   <param name="/init_y" value="0" />
   <param name="/init_z" value="1" />
-  <param name="/height" value="1" />
+  <param name="/height" value="0.4" />
   <param name="/width" value="1" />
-  <param name="/depth" value="1" />
+  <param name="/depth" value="0.2" />
   <param name="/safety_radius" value="0.4" />
   <param name="/maxIncline" value="M_PI/8" />
   <param name="/minIncline" value="-M_PI/8" />
@@ -16,9 +16,14 @@
 
   <param name="/topic_octomap" value="/octomap_full" />
   <param name="/topic_goal" value="/goal" />
-  <param name="/topic_pose" value="/uavPose" />
+  <param name="/topic_pose" value="/vehiclePose" />
 
   <node name="drone_node" pkg="vfh_rover" type="drone_node"/>
   <node name="goal_pub" pkg="vfh_rover" type="goal_pub.py"/>
   <node name="rover_sim" pkg="vfh_rover" type="simRover.py"/>
+
+  <arg name="rviz" default="true" />
+  <group if="$(arg rviz)">
+      <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz_vfh_rover" args="-d $(find vfh_rover)/vfh3d_test.rviz" />
+  </group>
 </launch>
