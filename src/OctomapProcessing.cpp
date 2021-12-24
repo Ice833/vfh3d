@@ -22,6 +22,8 @@ OctomapProcessing::OctomapProcessing(float alpha, Vehicle &v,
   histogram_pub = n.advertise<sensor_msgs::PointCloud2>("/histogram", 2);
   pose_pub = n.advertise<geometry_msgs::PoseArray>("/open_poses", 2);
   next_pose_pub = n.advertise<geometry_msgs::PoseStamped>("/next_direction", 2);
+  path_pub = n.advertise<nav_msgs::Path>("/vehicle_path",10);
+  begin = ros::Time::now();
 }
 
 void OctomapProcessing::poseCallback(const geometry_msgs::PoseStamped::ConstPtr& msg) {
@@ -42,7 +44,7 @@ void OctomapProcessing::octomapCallback(const octomap_msgs::Octomap::ConstPtr& m
   octomap::AbstractOcTree* atree = octomap_msgs::msgToMap(*msg);
   if(atree->size() !=0){
     tree = boost::make_shared<octomap::OcTree>(*(octomap::OcTree *)atree);
-    std::cout << "The size of the current map is: "<< tree->size() << std::endl;
+    // std::cout << "The size of the current map is: "<< tree->size() << std::endl;
   }  
   gotOcto = true;
   if (not HAS_PROC && gotGoal) {
@@ -100,7 +102,14 @@ void OctomapProcessing::process() {
   p.pose = *next_pose;
   vehicle.prevHeading = next_pose;
   vehicle.prevSet = true;
+  p.header.stamp = ros::Time::now();
   p.header.frame_id = "map";
   next_pose_pub.publish(p);
+
+  //Disp path
+  path.header.stamp = p.header.stamp;
+  path.header.frame_id = "map";
+  path.poses.push_back(p);
+  path_pub.publish(path);
   //delete(&h);
 }

@@ -7,6 +7,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
+#include<nav_msgs/Path.h>
 #include <tf/transform_listener.h>
 
 class OctomapProcessing {
@@ -17,7 +18,11 @@ class OctomapProcessing {
   tf::TransformListener listener;
   boost::shared_ptr<octomap::OcTree> tree;
   geometry_msgs::Pose goal;
-  ros::Publisher histogram_pub, pose_pub, next_pose_pub;
+  nav_msgs::Path path;
+  ros::Time begin;
+  
+  ros::Publisher histogram_pub, pose_pub, next_pose_pub, path_pub;
+
   OctomapProcessing(float alpha, Vehicle &v,
                     float maxRange, ros::NodeHandle n);
   void octomapCallback(const octomap_msgs::Octomap::ConstPtr& msg);
