@@ -3,7 +3,7 @@
     <param name="max_depth" value="13" />
   </node>
 
-  <param name="/init_x" value="-5" />
+  <param name="/init_x" value="0" />
   <param name="/init_y" value="0" />
   <param name="/init_z" value="1" />
   <param name="/height" value="1" />
@@ -14,7 +14,11 @@
   <param name="/minIncline" value="-M_PI/8" />
   <param name="/prevSet" value="false" />
 
-  <node name="vfh" pkg="vfh_rover" type="vfh_rover_node"/>
+  <param name="/topic_octomap" value="/octomap_full" />
+  <param name="/topic_goal" value="/goal" />
+  <param name="/topic_pose" value="/uavPose" />
+
+  <node name="drone_node" pkg="vfh_rover" type="drone_node"/>
   <node name="goal_pub" pkg="vfh_rover" type="goal_pub.py"/>
   <node name="rover_sim" pkg="vfh_rover" type="simRover.py"/>
 </launch>
