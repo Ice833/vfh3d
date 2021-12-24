@@ -40,7 +40,10 @@ void OctomapProcessing::goalCallback(const geometry_msgs::PoseStamped::ConstPtr&
 
 void OctomapProcessing::octomapCallback(const octomap_msgs::Octomap::ConstPtr& msg) {
   octomap::AbstractOcTree* atree = octomap_msgs::msgToMap(*msg);
-  tree = boost::make_shared<octomap::OcTree>(*(octomap::OcTree *)atree);
+  if(atree->size() !=0){
+    tree = boost::make_shared<octomap::OcTree>(*(octomap::OcTree *)atree);
+    std::cout << "The size of the current map is: "<< tree->size() << std::endl;
+  }  
   gotOcto = true;
   if (not HAS_PROC && gotGoal) {
     process();
