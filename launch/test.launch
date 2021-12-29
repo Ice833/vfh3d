@@ -9,7 +9,7 @@
   <param name="/height" value="0.4" />
   <param name="/width" value="1" />
   <param name="/depth" value="0.2" />
-  <param name="/safety_radius" value="0.4" />
+  <param name="/safety_radius" value="0.2" />
   <param name="/maxIncline" value="M_PI/8" />
   <param name="/minIncline" value="-M_PI/8" />
   <param name="/prevSet" value="false" />
