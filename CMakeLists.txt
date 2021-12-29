@@ -53,5 +53,8 @@ target_link_libraries(${PROJECT_NAME}_node ${LINK_LIBS})
 add_executable(drone_node src/drone_node.cpp ${SRC})
 target_link_libraries(drone_node ${LINK_LIBS})
 
+add_executable(cloud_node src/cloudProcessing.cpp)
+target_link_libraries(cloud_node ${LINK_LIBS})
+
 add_executable(${PROJECT_NAME}_testPC src/SingleVoxTest.cpp ${SRC})
 target_link_libraries(${PROJECT_NAME}_testPC ${LINK_LIBS})

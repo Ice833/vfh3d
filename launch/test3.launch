@@ -1,0 +1,8 @@
+<launch>
+
+  <node name="cloud_process" pkg="vfh_rover" type="goal_pub.py"/>
+  <node name="rover_sim" pkg="vfh_rover" type="simRover.py"/>
+  <node name="vfh" pkg="vfh_rover" type="vfh_rover_node"/>
+
+
+</launch>
