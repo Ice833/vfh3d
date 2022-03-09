@@ -95,7 +95,8 @@ void OctomapProcessing::process() {
   params.prevWeight = 5;
   params.headingWeight = 0;
   params.elevationWeight = 7;
-  params.goal_radius = 5;
+  // params.goal_radius = 5;
+  params.goal_radius = 0.5;
   geometry_msgs::Pose* next_pose = h.optimalPath(vehicle, goal, params, &pa.poses);
   if (next_pose == NULL)
     return;
