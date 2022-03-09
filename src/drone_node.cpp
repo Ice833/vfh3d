@@ -28,7 +28,7 @@ int main(int argc, char ** argv) {
 
     //   Vehicle v(-5,0,1, 1,1,1, 0.4, M_PI/8,-M_PI/8, false);
     Vehicle v(x,y,z, h,w,d, safety_radius, maxIncline, minIncline, prevSet);
-    OctomapProcessing op (0.09, v, 5, nh); // alpha = 0.09, max_range = 5;
+    OctomapProcessing op (0.05, v, 5, nh); // alpha = 0.09, max_range = 5;
     ros::Subscriber sub1 = nh.subscribe(topicOcto, 3, &OctomapProcessing::octomapCallback, &op);
     ros::Subscriber sub2 = nh.subscribe(topicGoal, 3, &OctomapProcessing::goalCallback, &op);
     ros::Subscriber sub3 = nh.subscribe(topicPose, 3, &OctomapProcessing::poseCallback, &op);
