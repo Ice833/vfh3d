@@ -4,10 +4,15 @@
     <param name="max_depth" value="13" />
     <!-- <param name="resolution" value="0.02" /> -->
   </node>
-
-  <param name="/init_x" value="-3.0" />
+  <!-- Airborne -->
+  <!-- <param name="/init_x" value="-3.0" />
   <param name="/init_y" value="-6.0" />
-  <param name="/init_z" value="10.0" />
+  <param name="/init_z" value="10.0" /> -->
+    <!-- Ground -->
+  <param name="/init_x" value="-3.0" />
+  <param name="/init_y" value="3.0" />
+  <param name="/init_z" value="0" />
+
   <param name="/height" value="0.4" />
   <param name="/width" value="0.8" />
   <param name="/depth" value="0.2" />

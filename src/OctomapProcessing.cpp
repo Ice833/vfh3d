@@ -91,12 +91,36 @@ void OctomapProcessing::process() {
   // Disp next position
   geometry_msgs::PoseStamped p;
   PathParams params;
+
+  double zDiff = 0.0;
+  
+  zDiff = abs(goal.position.z - p.pose.position.z);
+
   params.goalWeight = 10;
   params.prevWeight = 5;
   params.headingWeight = 0;
   params.elevationWeight = 7;
-  // params.goal_radius = 5;
+
+  if(zDiff > 2.0){
+    params.goalWeight = 9;
+    params.prevWeight = 5;
+    params.headingWeight = 3;
+    params.elevationWeight = 0 ;
+  }
+
+//Airborne
+  // params.goalWeight = 10;
+  // params.prevWeight = 5;
+  // params.headingWeight = 0;
+  // params.elevationWeight = 7;
+  //Ground
+  // params.goalWeight = 9;
+  // params.prevWeight = 5;
+  // params.headingWeight = 3;
+  // params.elevationWeight = 0 ;
+
   params.goal_radius = 0.5;
+  
   geometry_msgs::Pose* next_pose = h.optimalPath(vehicle, goal, params, &pa.poses);
   if (next_pose == NULL)
     return;

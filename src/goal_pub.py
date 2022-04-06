@@ -7,10 +7,13 @@ def init():
     pub = rospy.Publisher("/goal", PoseStamped, queue_size=10)
     rate = rospy.Rate(2)
     goal = PoseStamped()
-    goal.pose.position.x = 12
-    goal.pose.position.y = 0
-    goal.pose.position.z = 1
-    goal.pose.orientation.w = 1
+    goal.pose.position.x = 6
+    goal.pose.position.y = -7.5
+    goal.pose.position.z = 10
+    goal.pose.orientation.w = 0.3827
+    goal.pose.orientation.x = 0
+    goal.pose.orientation.y = 0
+    goal.pose.orientation.z = -0.3827
     goal.header.frame_id = "map"
     rospy.loginfo(goal)
     while not rospy.is_shutdown():
