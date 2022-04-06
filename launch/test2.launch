@@ -1,11 +1,28 @@
 <launch>
-  <node name="test_octomap" pkg="octomap_server" type="octomap_server_node" args="$(find vfh_rover)/fr_079.bt">
+  <node name="test_octomap" pkg="octomap_server" type="octomap_server_node" args="/home/lab101/octomap_tutor/data/tower2.bt">
   <!-- <node name="test_octomap" pkg="octomap_server" type="octomap_server_node" args="/home/lab101/catkin_ws/src/vfh3d/fr_079.bt"> -->
     <param name="max_depth" value="13" />
+    <!-- <param name="resolution" value="0.02" /> -->
   </node>
+
+  <param name="/init_x" value="-3.0" />
+  <param name="/init_y" value="-6.0" />
+  <param name="/init_z" value="10.0" />
+  <param name="/height" value="0.4" />
+  <param name="/width" value="0.8" />
+  <param name="/depth" value="0.2" />
+  <param name="/safety_radius" value="0.4" />
+  <param name="/maxIncline" value="M_PI/2" />
+  <param name="/minIncline" value="-M_PI/2" />
+  <param name="/prevSet" value="false" />
+
+  <param name="/topic_octomap" value="/octomap_full" />
+  <param name="/topic_goal" value="/goal" />
+  <param name="/topic_pose" value="/vehiclePose" />
+
   <node name="goal_pub" pkg="vfh_rover" type="goal_pub.py"/>
   <node name="rover_sim" pkg="vfh_rover" type="simRover.py"/>
-  <node name="vfh" pkg="vfh_rover" type="vfh_rover_node"/>
+  <node name="vfh" pkg="vfh_rover" type="drone_node"/>
 
   <arg name="rviz" default="true" />
   <group if="$(arg rviz)">
